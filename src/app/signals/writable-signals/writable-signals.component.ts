@@ -8,9 +8,13 @@ import { Component, OnInit, signal } from '@angular/core';
 })
 export class WritableSignalsComponent implements OnInit {
 
+  /* without writable signals */
   // count = 0;
 
-  count = signal(0)
+  /* with writable signals */
+  count = signal(0);
+
+  colors = signal(["red", "green"]);
 
   constructor() { }
 
@@ -19,8 +23,18 @@ export class WritableSignalsComponent implements OnInit {
   }
 
   increase() {
+    /* without writable signals */
     // this.count = this.count + 1;
-    this.count.set(this.count() + 1);
+
+    /* with writable signals -> set() method */
+    // this.count.set(this.count() + 1);
+
+    /* with writable signals -> update() method */
+    this.count.update(values => values + 1);
+
+    /* with writable signals -> update() method to update values in array in angular 19 whereas angular 16 uses mutate() method with push() */
+    this.colors.update(colors => [...colors, 'blue']);
+    console.log(this.colors());
   }
 
 }
