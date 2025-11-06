@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, effect, OnInit, signal } from '@angular/core';
 
 @Component({
   selector: 'app-writable-signals',
@@ -16,7 +16,14 @@ export class WritableSignalsComponent implements OnInit {
 
   colors = signal(["red", "green"]);
 
-  constructor() { }
+  constructor() {
+    effect(() => {
+      console.log("Effects due to count signal is trigerred", this.count());
+    });
+    effect(() => {
+      console.log("Effects due to color signal is trigerred", this.colors());
+    });
+  }
 
   ngOnInit(): void {
     console.log(this.count())
@@ -34,7 +41,7 @@ export class WritableSignalsComponent implements OnInit {
 
     /* with writable signals -> update() method to update values in array in angular 19 whereas angular 16 uses mutate() method with push() */
     this.colors.update(colors => [...colors, 'blue']);
-    console.log(this.colors());
+    // console.log(this.colors());
   }
 
 }
